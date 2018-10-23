@@ -119,7 +119,7 @@ public class TipousuarioDao {
 
 	public int update(TipousuarioBean oTipousuarioBean) throws Exception {
 		int iResult = 0;
-		String strSQL = "UPDATE " + ob + " SET desc = ? WHERE id = ?;";
+		String strSQL = "UPDATE " + ob + " SET `desc` = ? WHERE `tipousuario`.`id` = ?;";
 
 		PreparedStatement oPreparedStatement = null;
 		try {
