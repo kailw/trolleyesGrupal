@@ -12,8 +12,8 @@ package net.daw.bean;
 public class LineaBean {
     private int id;
     private int cantidad;
-    private int idFactura;
-    private int idProducto;
+    private int id_factura;
+    private int id_producto;
 
     /**
      * @return the id
@@ -46,29 +46,29 @@ public class LineaBean {
     /**
      * @return the idFactura
      */
-    public int getIdFactura() {
-        return idFactura;
+    public int getId_factura() {
+        return id_factura;
     }
 
     /**
-     * @param idFactura the idFactura to set
+     * @param id_factura the idFactura to set
      */
-    public void setIdFactura(int idFactura) {
-        this.idFactura = idFactura;
+    public void setId_factura(int id_factura) {
+        this.id_factura = id_factura;
     }
 
     /**
      * @return the idProducto
      */
-    public int getIdProducto() {
-        return idProducto;
+    public int getId_producto() {
+        return id_producto;
     }
 
     /**
-     * @param idProducto the idProducto to set
+     * @param id_producto the idProducto to set
      */
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setId_producto(int id_producto) {
+        this.id_producto = id_producto;
     }
     
 }

@@ -152,6 +152,7 @@ public class UsuarioDao {
             oPreparedStatement.setString(4, oUsuarioBean.getApe2());
             oPreparedStatement.setString(5, oUsuarioBean.getLogin());
             oPreparedStatement.setInt(6, oUsuarioBean.getId_tipoUsuario());
+            oPreparedStatement.setInt(7, oUsuarioBean.getId());
             iResult = oPreparedStatement.executeUpdate();
 
         } catch (SQLException e) {

@@ -6,22 +6,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import net.daw.bean.ProductoBean;
+import net.daw.bean.LineaBean;
 
-public class ProductoDao {
+public class LineaDao {
 
     Connection oConnection;
     String ob = null;
 
-    public ProductoDao(Connection oConnection, String ob) {
+    public LineaDao(Connection oConnection, String ob) {
         super();
         this.oConnection = oConnection;
         this.ob = ob;
     }
 
-    public ProductoBean get(int id) throws Exception {
+    public LineaBean get(int id) throws Exception {
         String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
-        ProductoBean oProductoBean;
+        LineaBean oLineaBean;
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {
@@ -29,16 +29,13 @@ public class ProductoDao {
             oPreparedStatement.setInt(1, id);
             oResultSet = oPreparedStatement.executeQuery();
             if (oResultSet.next()) {
-                oProductoBean = new ProductoBean();
-                oProductoBean.setId(oResultSet.getInt("id"));
-                oProductoBean.setCodigo(oResultSet.getString("codigo"));
-                oProductoBean.setDesc(oResultSet.getString("desc"));
-                oProductoBean.setExistencias(oResultSet.getInt("existencias"));
-                oProductoBean.setPrecio(oResultSet.getFloat("precio"));
-                oProductoBean.setFoto(oResultSet.getString("foto"));
-                oProductoBean.setIdProducto(oResultSet.getInt("id_tipoProducto"));
+                oLineaBean = new LineaBean();
+                oLineaBean.setId(oResultSet.getInt("id"));
+                oLineaBean.setCantidad(oResultSet.getInt("cantidad"));
+                oLineaBean.setId_producto(oResultSet.getInt("id_producto"));
+                oLineaBean.setId_factura(oResultSet.getInt("id_factura"));
             } else {
-                oProductoBean = null;
+                oLineaBean = null;
             }
         } catch (SQLException e) {
             throw new Exception("Error en Dao get de " + ob, e);
@@ -50,7 +47,7 @@ public class ProductoDao {
                 oPreparedStatement.close();
             }
         }
-        return oProductoBean;
+        return oLineaBean;
     }
 
     public int remove(int id) throws Exception {
@@ -95,26 +92,21 @@ public class ProductoDao {
         return res;
     }
 
-    public ProductoBean create(ProductoBean oProductoBean) throws Exception {
-        String strSQL = "INSERT INTO " + ob + " (`id`, `codigo`, `desc`, `existencias`, `precio`, `foto`"
-                + ", `id_tipoProducto`) VALUES (NULL, ?,?,?,?,?,?); ";
+    public LineaBean create(LineaBean oLineaBean) throws Exception {
+        String strSQL = "INSERT INTO " + ob + " (`id`, `cantidad`, `id_producto`, `id_factura`) VALUES (NULL, ?,?,?); ";
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
-            oPreparedStatement.setString(1, oProductoBean.getCodigo());
-            oPreparedStatement.setString(2, oProductoBean.getDesc());
-            oPreparedStatement.setInt(3, oProductoBean.getExistencias());
-            oPreparedStatement.setFloat(4, oProductoBean.getPrecio());
-            oPreparedStatement.setString(5, oProductoBean.getFoto());
-            oPreparedStatement.setString(6, oProductoBean.getFoto());
-            oPreparedStatement.setInt(6, oProductoBean.getIdProducto());
+            oPreparedStatement.setInt(1, oLineaBean.getCantidad());
+            oPreparedStatement.setInt(2, oLineaBean.getId_producto());
+            oPreparedStatement.setInt(3, oLineaBean.getId_factura());
             oPreparedStatement.executeUpdate();
             oResultSet = oPreparedStatement.getGeneratedKeys();
             if (oResultSet.next()) {
-                oProductoBean.setId(oResultSet.getInt(1));
+                oLineaBean.setId(oResultSet.getInt(1));
             } else {
-                oProductoBean.setId(0);
+                oLineaBean.setId(0);
             }
         } catch (SQLException e) {
             throw new Exception("Error en Dao create de " + ob, e);
@@ -126,25 +118,20 @@ public class ProductoDao {
                 oPreparedStatement.close();
             }
         }
-        return oProductoBean;
+        return oLineaBean;
     }
 
-    public int update(ProductoBean oProductoBean) throws Exception {
+    public int update(LineaBean oLineaBean) throws Exception {
         int iResult = 0;
-        String strSQL = "UPDATE " + ob + " SET  `codigo` = ?, `desc` = ?, `existencias` = ?, `precio` = ? "
-                + ", `foto` = ?, `id_tipoProducto` = ? WHERE `Producto`.`id` = ?;";
+        String strSQL = "UPDATE " + ob + " SET  `cantidad` = ?, `id_producto` = ?, `id_factura` = ? WHERE `Linea`.`id` = ?;";
 
         PreparedStatement oPreparedStatement = null;
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
-            oPreparedStatement.setString(1, oProductoBean.getCodigo());
-            oPreparedStatement.setString(2, oProductoBean.getDesc());
-            oPreparedStatement.setInt(3, oProductoBean.getExistencias());
-            oPreparedStatement.setFloat(4, oProductoBean.getPrecio());
-            oPreparedStatement.setString(5, oProductoBean.getFoto());
-            oPreparedStatement.setString(6, oProductoBean.getFoto());
-            oPreparedStatement.setInt(6, oProductoBean.getIdProducto());
-            oPreparedStatement.setInt(7, oProductoBean.getId());
+            oPreparedStatement.setInt(1, oLineaBean.getCantidad());
+            oPreparedStatement.setInt(2, oLineaBean.getId_producto());
+            oPreparedStatement.setInt(3, oLineaBean.getId_factura());
+            oPreparedStatement.setInt(4, oLineaBean.getId());
             iResult = oPreparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -157,9 +144,9 @@ public class ProductoDao {
         return iResult;
     }
 
-    public ArrayList<ProductoBean> getpage(int iRpp, int iPage) throws Exception {
-        String strSQL = "SELECT * FROM `Producto` ";
-        ArrayList<ProductoBean> alProductoBean;
+    public ArrayList<LineaBean> getpage(int iRpp, int iPage) throws Exception {
+        String strSQL = "SELECT * FROM `Linea` ";
+        ArrayList<LineaBean> alLineaBean;
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
             strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
             ResultSet oResultSet = null;
@@ -167,17 +154,14 @@ public class ProductoDao {
             try {
                 oPreparedStatement = oConnection.prepareStatement(strSQL);
                 oResultSet = oPreparedStatement.executeQuery();
-                alProductoBean = new ArrayList<ProductoBean>();
+                alLineaBean = new ArrayList<LineaBean>();
                 while (oResultSet.next()) {
-                    ProductoBean oProductoBean = new ProductoBean();
-                    oProductoBean.setId(oResultSet.getInt("id"));
-                    oProductoBean.setCodigo(oResultSet.getString("codigo"));
-                    oProductoBean.setDesc(oResultSet.getString("desc"));
-                    oProductoBean.setExistencias(oResultSet.getInt("existencias"));
-                    oProductoBean.setPrecio(oResultSet.getFloat("precio"));
-                    oProductoBean.setFoto(oResultSet.getString("foto"));
-                    oProductoBean.setIdProducto(oResultSet.getInt("id_tipoProducto"));
-                    alProductoBean.add(oProductoBean);
+                    LineaBean oLineaBean = new LineaBean();
+                    oLineaBean.setId(oResultSet.getInt("id"));
+                    oLineaBean.setCantidad(oResultSet.getInt("cantidad"));
+                    oLineaBean.setId_producto(oResultSet.getInt("id_producto"));
+                    oLineaBean.setId_factura(oResultSet.getInt("id_factura"));
+                    alLineaBean.add(oLineaBean);
                 }
             } catch (SQLException e) {
                 throw new Exception("Error en Dao getpage de " + ob, e);
@@ -192,7 +176,7 @@ public class ProductoDao {
         } else {
             throw new Exception("Error en Dao getpage de " + ob);
         }
-        return alProductoBean;
+        return alLineaBean;
 
     }
 

@@ -9,7 +9,7 @@ package net.daw.bean;
  *
  * @author a024465169t
  */
-public class TipoProductoBean {
+public class TipoproductoBean {
     private int id;
     private String desc;
 

@@ -13,7 +13,7 @@ import java.sql.Date;
  */
 public class FacturaBean {
     private int id;
-    private int idUsuario;
+    private int id_usuario;
     private Date fecha;
     private Float iva;
 
@@ -34,15 +34,15 @@ public class FacturaBean {
     /**
      * @return the idUsuario
      */
-    public int getIdUsuario() {
-        return idUsuario;
+    public int getId_usuario() {
+        return id_usuario;
     }
 
     /**
-     * @param idUsuario the idUsuario to set
+     * @param id_usuario the idUsuario to setu
      */
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
     }
 
     /**
